@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 
 #Set up GUI
 window = tk.Tk()  #Makes main window
-window.wm_title("Redbird Robotics")
+window.wm_title("Redbird Robotics") #set window title
 window.config(background="#FFFFFF")
 
 #Graphics window
@@ -15,7 +15,7 @@ imageFrame.grid(row=0, column=0, padx=10, pady=2)
 #Capture video frames
 lmain = tk.Label(imageFrame)
 lmain.grid(row=0, column=0)
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(1) #external webcam
 def show_frame():
     _, frame = cap.read()
     frame = cv2.flip(frame, 1)
