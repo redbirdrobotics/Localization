@@ -3,6 +3,7 @@ import numpy as np
 import time
 
 class Utilities():
+    
     @staticmethod
     def replace_Rows(matrix, rows, rowNumber):
         numRows = rows.shape
@@ -13,6 +14,7 @@ class Utilities():
     #Takes current position of all objects out of image
     @staticmethod
     def removeAll_Rect(image, matrix):
+        newImage = image
         numRows = matrix.shape
         for i in range(numRows[0]):
             if not np.all(matrix[i,:] == 0):
@@ -20,8 +22,21 @@ class Utilities():
                 y = int(matrix[i,1])
                 w = int(matrix[i,2])
                 h = int(matrix[i,3])
-                image = cv2.rectangle(image, (x,y), (x+w, y+h), (255,255,255), -1)
-        return image
+                newImage = cv2.rectangle(newImage, (x,y), (x+w, y+h), (255,255,255), -1)
+        return newImage
+
+    @staticmethod
+    def drawAll_Rect(image, matrix):
+        newImage = image
+        numRows = matrix.shape
+        for i in range(numRows[0]):
+            if not np.all(matrix[i,:] == 0):
+                x = int(matrix[i,0])
+                y = int(matrix[i,1])
+                w = int(matrix[i,2])
+                h = int(matrix[i,3])
+                newImage = cv2.rectangle(newImage, (x,y), (x+w, y+h), (255,255,255), 2)
+        return newImage
 
     #Finds empty row of current position matrix
     @staticmethod
@@ -41,6 +56,19 @@ class Utilities():
             if np.all(cur_pos[i,:] != 0):
                 foundList.extend([i])
         return foundList
+
+    @staticmethod
+    def label_ROI(image, cur_pos):
+        image_text = image
+        rowList = Utilities.getAll_takenRows(cur_pos)
+        length = len(rowList)
+        for i in range(length):
+            bot = rowList[i]
+            x = int(cur_pos[bot,0])
+            y = int(cur_pos[bot,1])
+            h = int(cur_pos[bot,3])
+            image_text = cv2.putText(image_text, ("%s"% i), (x,y), cv2.FONT_HERSHEY_SIMPLEX, 0.75, 255, 2)
+        return image_text
 
     @staticmethod
     def get_Frame(video):        
@@ -77,10 +105,27 @@ class Utilities():
                         old_array = mat
                         new_row = np.array([[x,y,w,h]])
                         mat = np.vstack((old_array, new_row))
-            gray = Utilities.removeAll_Rect(gray, mat)
-        return mat
-    
+            gray = Utilities.removeAll_Rect(gray, mat)            
+        return mat 
+
+    @staticmethod
+    def compare_Equals(coords, value, threshold):
+        if value == threshold:
+            coords = np.array([0,0,0,0])
+        return coords
+
+    @staticmethod
+    def find_notEqual(value, listValues, maxValue):
+        for i in range(maxValue):
+            if np.all(value == listValues[i,:]):
+                
+            
 ##cur_pos = np.array([[1,2,3,4],[0,0,0,0],[1,2,3,4],[0,0,0,0],[1,2,3,4],[0,0,0,0],[1,2,3,4],[0,0,0,0],[1,2,3,4],[0,0,0,0],[1,2,3,4],[0,0,0,0],[1,2,3,4],[0,0,0,0]])
 ##foundList = Utilities.get_all_openRow(cur_pos)
 ##print foundList
- 
+##array1 = np.array([[1,2,3,4], [1,2,4,4]])
+##array2 = np.array([1,2,4,4])
+##if np.array_equal(array1[0,:], array2):
+##    print "works"
+##else:
+##    print "nope"
