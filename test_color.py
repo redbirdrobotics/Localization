@@ -2,31 +2,31 @@ import numpy as np
 import cv2
 import time
 
-green = False
-red = False
+#green = False
+#red = False
 
 def test_color(img, threshold_min, threshold_max, min_pixel):
+
     yuv = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
-
     mask = cv2.inRange(yuv, threshold_min, threshold_max)
-    #res = cv2.bitwise_and(img, img, mask = mask)
-    
-    #array = np.asarray(mask)
-    #count = np.count_nonzero(array)
     count = cv2.countNonZero(mask)
-
-    print count
+    #print count
     
     if(count > min_pixel):
         return True
+
     else:
         return False
 
 
 
+
+
+#Everything after this point is added for the program to run
+# Discard the first 30 frames so the camera can properly startup
+
 cap = cv2.VideoCapture(1)
 
-# Discard the first 30 frames so the camera can properly startup
 for x in xrange(30):
     _, frame = cap.read()
 
@@ -51,11 +51,8 @@ cap.release()
 
 
 
-#red min(175,70,26)
-#red max(180,255,255)
+#red min(37,87,103)
+#red max(113,113,142)
 
-#red2 min(0,70,26)
-#red2 max(6,255,255)
-
-#green min(50,70,26)
-#green max(76,255,255)
+#green min(4,162,99)
+#green max(154,200,156)
