@@ -30,6 +30,8 @@ def test_color(img, minPixel):
         return "green"
     elif countRed >= minPixel:
         return "red"
+    elif countWhite >= minPixel:
+        return "white"
     else:
         return "none"
 		
@@ -38,6 +40,6 @@ for x in xrange(30):
     _, frame = cap.read()
 _, frame = cap.read()
 min_pixel = 1000
-color = test_color(frame, min_pixel)
+color = test_color(frame, min_pixel, 2000)
 print color
 cap.release()
