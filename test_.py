@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import time
 
-def test_color(img, minPixel):
+def test_color(img, minPixel, minPixelW):
     
     thrMinGreen = np.array([36,87,103])
     thrMaxGreen = np.array([113,113,142])
@@ -30,7 +30,7 @@ def test_color(img, minPixel):
         return "green"
     elif countRed >= minPixel:
         return "red"
-    elif countWhite >= minPixel:
+    elif countWhite >= minPixelW:
         return "white"
     else:
         return "none"
@@ -40,6 +40,7 @@ for x in xrange(30):
     _, frame = cap.read()
 _, frame = cap.read()
 min_pixel = 1000
-color = test_color(frame, min_pixel, 2000)
+min_pixel_w = 1000
+color = test_color(frame, min_pixel, min_pixel_w)
 print color
 cap.release()
